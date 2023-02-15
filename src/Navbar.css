@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: ProximaNova, arial, Helvetica Neue, sans-serif;
+}
+
+.nav {
+  background-color: lightgray;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.nav div {
+  height: 50px;
+}
+
+.nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 20%;
+}

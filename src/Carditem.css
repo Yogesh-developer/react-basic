@@ -1,0 +1,27 @@
+.food-card {
+  width: 250px;
+  height: 350px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px;
+  display: inline-block;
+  text-align: center;
+}
+.food-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.food-card h3 {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.food-card p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+}

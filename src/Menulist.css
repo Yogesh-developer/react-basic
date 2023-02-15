@@ -1,0 +1,102 @@
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: lightgrey;
+  border-radius: 10px;
+}
+
+.menu-card-list {
+  display: flex;
+  justify-content: space-between;
+  height: 80%;
+}
+
+.menu-list {
+  width: 20%;
+  text-align: right;
+  padding: 2%;
+  padding-top: 5%;
+  border-right: 1px solid lightgray;
+  height: 300px;
+  overflow-y: auto;
+}
+
+.menu-list ul {
+  list-style: none;
+}
+.menu-list li {
+  padding: 4px;
+}
+
+.menu-item {
+  width: 50%;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.item {
+  height: 180px;
+  margin: 5% auto;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+  position: relative;
+}
+.add-cart {
+  margin: auto;
+}
+.menu-details {
+  width: 60%;
+  margin: auto;
+}
+.item img {
+  width: 80%;
+  height: 100px;
+  border-radius: 10px;
+}
+.cart {
+  width: 30%;
+}
+.add-button {
+  width: 15%;
+  position: absolute;
+  bottom: 15%;
+  left: 72%;
+  padding: 5px 10px;
+  background-color: white;
+  border: 1px solid lightgray;
+  cursor: pointer;
+  color: green;
+}
+
+.add-button-div {
+  width: 12%;
+  position: absolute;
+  bottom: 15%;
+  left: 72%;
+  padding: 5px 10px;
+  background-color: white;
+  border: 1px solid lightgray;
+  color: green;
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-button-div button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: green;
+  font-weight: 600;
+}
