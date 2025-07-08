@@ -1,5 +1,30 @@
-export const API_LINK =
-  "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING";
+export const API_LINK = [
+  {
+    id: "101",
+    name: "Spicy Bites",
+    cloudinaryImageId: "abcd1234efgh5678",
+    slugs: {
+      city: "Bangalore",
+    },
+  },
+  {
+    id: "102",
+    name: "Tandoori House",
+    cloudinaryImageId: "ijkl9101mnop1121",
+    slugs: {
+      city: "Mumbai",
+    },
+  },
+  {
+    id: "103",
+    name: "Green Garden",
+    cloudinaryImageId: "qrst3141uvwx5161",
+    slugs: {
+      city: "Chennai",
+    },
+  },
+];
+
 export const IMG_CLOUD_LINK =
   "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
 
