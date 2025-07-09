@@ -1,0 +1,27 @@
+name: AI Code Review via Ollama
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  run-on-label:
+    if: contains(github.event.pull_request.labels.*.name, 'ai-code-review')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run AI Code Review Bot
+        run: node ai-code-review/review.js
+        env:
+          GITHUB_TOKEN: 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

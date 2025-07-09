@@ -26,10 +26,15 @@
     "process": "^0.11.10"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@parcel/transformer-postcss": "^2.8.3",
+    "dotenv": "^17.1.0",
     "lightningcss": "^1.18.0",
+    "node-fetch": "^3.3.2",
+    "openai": "^5.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0"
+    "react-router-dom": "^6.8.0",
+    "simple-git": "^3.28.0"
   }
 }
