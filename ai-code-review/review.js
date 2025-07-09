@@ -1,7 +1,16 @@
-import { config } from "dotenv";
-import fetch from "node-fetch";
+// ai-code-review/review.js
+const path = require("node:path");
+const { config } = require("dotenv");
+const fetch = require("node-fetch");
 
-config({ path: "../.env" });
+// Load environment variables from the root `.env`
+const rootEnvPath = path.resolve(__dirname, "../.env");
+const result = config({ path: rootEnvPath });
+
+if (result.error) {
+  console.error("❌ Failed to load .env from root:", result.error);
+  process.exit(1);
+}
 
 const { GITHUB_TOKEN, REPO_OWNER, REPO_NAME, PR_NUMBER, GITHUB_API_URL } =
   process.env;
@@ -15,45 +24,20 @@ async function getDiff() {
       Accept: "application/vnd.github.v3.diff",
     },
   });
-
   if (!res.ok) {
     throw new Error(
-      `❌ Failed to fetch PR diff: ${res.status} - ${await res.text()}`
+      `Failed to fetch diff: ${res.status} – ${await res.text()}`
     );
   }
-
-  return await res.text();
+  return res.text();
 }
 
-// Generate review using Ollama (local model)
+// Generate AI review via Ollama
 async function getAIReview(diff) {
   const prompt = `
-After your prompt, paste the entire pull request diff.
+You are a senior React engineer. Provide inline suggestions with GitHub-style suggestion blocks.
+Paste the diff after this instruction:
 
----
-
-### 🧠 Why this works?
-
-- **Line-by-line context** triggers precise, actionable comments 💬  
-- **suggestion blocks** create usable diffs in GitHub review UI  
-- **File & line references** tell the AI exactly where to comment  
-- **Rationale section** helps developers understand the "why" behind changes, not just the "what" :contentReference[oaicite:9]{index=9}
-
----
-
-## ✅ Integration with Your Bot
-
-In your review generation, embed the above prompt before sending to Ollama or Gemini. The response will contain structured review comments you can parse and post via:
-
-
-- Or consolidated into a single comment with all inline suggestions
-
----
-
-Would you like me to help parse this response and call GitHub’s inline comments endpoint automatically?
-::contentReference[oaicite:10]{index=10}
-
-Git Diff:
 \`\`\`diff
 ${diff}
 \`\`\`
@@ -63,21 +47,22 @@ ${diff}
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "codellama", // or any model you've loaded in Ollama
-      prompt: prompt,
+      model: "codellama",
+      prompt,
       stream: false,
     }),
   });
-
+  if (!res.ok) {
+    throw new Error(`Ollama error: ${res.status} – ${await res.text()}`);
+  }
   const data = await res.json();
-  console.log("dta", data);
-  return data.response || "No response from model.";
+  console.log("📝 AI response snippet:\n", data.response.slice(0, 200), "...");
+  return data.response || "No response";
 }
 
-// Post review comment to GitHub
+// Post comment to GitHub PR
 async function postCommentToPR(body) {
   const url = `${GITHUB_API_URL}/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments`;
-
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -87,30 +72,30 @@ async function postCommentToPR(body) {
     },
     body: JSON.stringify({ body }),
   });
-
-  if (res.ok) {
-    console.log("✅ Comment posted to PR");
-  } else {
-    const err = await res.text();
-    console.error("❌ Failed to post comment:", err);
+  if (!res.ok) {
+    throw new Error(
+      `Failed to post comment: ${res.status} – ${await res.text()}`
+    );
   }
+  console.log("✅ Comment posted to PR");
 }
 
-// Main flow
 async function runReviewFlow() {
-  console.log("📥 Fetching GitHub PR diff...");
+  console.log("📥 Fetching Git diff...");
   const diff = await getDiff();
-
   if (!diff.trim()) {
-    console.log("⚠️ No diff found.");
+    console.warn("⚠️ No diff found.");
     return;
   }
 
   console.log("🧠 Sending diff to Ollama...");
   const review = await getAIReview(diff);
 
-  console.log("💬 Posting review to GitHub...");
+  console.log("💬 Posting review comment...");
   await postCommentToPR(review);
 }
 
-runReviewFlow().catch(console.error);
+runReviewFlow().catch((err) => {
+  console.error("💥 Review flow failed:", err);
+  process.exit(1);
+});
