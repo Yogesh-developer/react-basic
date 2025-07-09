@@ -26,6 +26,7 @@ export default function Home() {
       {allRestaurantData.map((resturant) => (
         <Link to={"/menu/" + resturant.id}>
           <Carditem {...resturant} key={resturant.id} />
+          <div>My name is yogesh</div>
         </Link>
       ))}
     </div>
