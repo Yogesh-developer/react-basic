@@ -29,10 +29,6 @@ jobs:
         run: |
           ollama pull codellama
 
-      - name: Run codellama model
-        run: |
-          ollama run codellama "Explain the basics of machine learning."
-
       - name: Create .env file
         run: |
           cat <<EOF > .env
