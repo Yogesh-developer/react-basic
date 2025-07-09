@@ -6,23 +6,26 @@ import "./Home.css";
 import Simmer from "./Simmer";
 
 export default function Home() {
-  const [allResturantData, setAllRestarunatData] = useState([]);
+  const [allRestaurantData, setAllRestaurantData] = useState([]);
+
   async function getResturantData() {
-    const response = await fetch(API_LINK);
-    const result = await response.json();
-    console.log(result?.data?.cards[2]?.data?.data?.cards);
-    setAllRestarunatData(result?.data?.cards[2]?.data?.data?.cards);
+    try {
+      setAllRestaurantData(API_LINK);
+    } catch (error) {
+      console.error("Failed to fetch restaurant data:", error);
+    }
   }
+
   useEffect(() => {
     getResturantData();
   }, []);
-  return allResturantData?.length === 0 ? (
+  return allRestaurantData?.length === 0 ? (
     <Simmer />
   ) : (
     <div className="card">
-      {allResturantData.map((resturant) => (
-        <Link to={"/menu/" + resturant.data.id}>
-          <Carditem {...resturant.data} key={resturant.data.id} />
+      {allRestaurantData.map((resturant) => (
+        <Link to={"/menu/" + resturant.id}>
+          <Carditem {...resturant} key={resturant.id} />
         </Link>
       ))}
     </div>
