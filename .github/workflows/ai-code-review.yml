@@ -1,0 +1,37 @@
+name: AI Code Review via Ollama
+
+on:
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  run-on-label:
+    if: contains(github.event.pull_request.labels.*.name, 'ai-code-review')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run AI Code Review Bot
+        run: node ai-code-review/review.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          REPO_OWNER: Yogesh-developer
+          REPO_NAME: react-basic
+          PR_NUMBER: 1
+          GITHUB_API_URL: https://api.github.com
