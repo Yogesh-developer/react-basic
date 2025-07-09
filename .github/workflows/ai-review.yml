@@ -31,3 +31,7 @@ jobs:
         run: node ai-code-review/review.js
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          REPO_OWNER: Yogesh-developer
+          REPO_NAME: react-basic
+          PR_NUMBER: 1
+          GITHUB_API_URL: https://api.github.com
