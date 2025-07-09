@@ -1,8 +1,12 @@
 name: AI Code Review via Ollama
 
 on:
-  pull_request:
+  pull_request_target:
     types: [labeled]
+
+permissions:
+  issues: write
+  pull-requests: write
 
 jobs:
   run-on-label:
@@ -12,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -24,4 +30,4 @@ jobs:
       - name: Run AI Code Review Bot
         run: node ai-code-review/review.js
         env:
-          GITHUB_TOKEN: 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
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
