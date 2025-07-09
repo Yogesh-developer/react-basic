@@ -25,6 +25,14 @@ jobs:
       - name: Setup Ollama
         uses: ai-action/setup-ollama@v1
 
+      - name: Install codellama model
+        run: |
+          ollama pull codellama
+
+      - name: Run codellama model
+        run: |
+          ollama run codellama "Explain the basics of machine learning."
+
       - name: Create .env file
         run: |
           cat <<EOF > .env
